@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@Disabled
+@TeleOp(name = "Hello World")
 public class HelloWorld extends OpMode {
 
     @Override
@@ -14,6 +14,6 @@ public class HelloWorld extends OpMode {
     }
 // display your name in the loop
     public void loop() {
-        telemetry.addData("Hello", "Mr. Brooke");
+        telemetry.addData("Hello", "Bentley");
     }
 }
