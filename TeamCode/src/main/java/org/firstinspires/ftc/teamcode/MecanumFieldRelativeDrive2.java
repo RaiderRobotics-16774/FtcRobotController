@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 /*
@@ -55,37 +54,37 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 //@Disabled
 public class MecanumFieldRelativeDrive2 extends OpMode {
     // This declares the four motors needed
-    DcMotor Front_Left;
-    DcMotor Front_Right;
-    DcMotor Back_Left;
-    DcMotor Back_Right;
+    DcMotor frontLeftDrive;
+    DcMotor frontRightDrive;
+    DcMotor backLeftDrive;
+    DcMotor backRightDrive;
 
     // This declares the IMU needed to get the current direction the robot is facing
     IMU imu;
 
     @Override
     public void init() {
-        Front_Left = hardwareMap.get(DcMotor.class, "Front_Left");
-        Front_Right = hardwareMap.get(DcMotor.class, "Front_Right");
-        Back_Left = hardwareMap.get(DcMotor.class, "Back_Left");
-        Back_Right = hardwareMap.get(DcMotor.class, "Back_Right");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
-        Back_Left.setDirection(DcMotor.Direction.REVERSE);
-        Front_Left.setDirection(DcMotor.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
         // wires, you should remove these
-//        Front_Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        Front_Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        Back_Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        Back_Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        Front_Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Front_Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Back_Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Back_Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         imu = hardwareMap.get(IMU.class, "imu");
@@ -174,22 +173,22 @@ public class MecanumFieldRelativeDrive2 extends OpMode {
         // We multiply by maxSpeed so that it can be set lower for outreaches
         // When a young child is driving the robot, we may not want to allow full
         // speed.
-        Front_Left.setPower(maxSpeed * (Front_LeftPower / maxPower));
-        Front_Right.setPower(maxSpeed * (Front_RightPower / maxPower));
-        Back_Left.setPower(maxSpeed * (Back_LeftPower / maxPower));
-        Back_Right.setPower(maxSpeed * (Back_RightPower / maxPower));
+        frontLeftDrive.setPower(maxSpeed * (Front_LeftPower / maxPower));
+        frontRightDrive.setPower(maxSpeed * (Front_RightPower / maxPower));
+        backLeftDrive.setPower(maxSpeed * (Back_LeftPower / maxPower));
+        backRightDrive.setPower(maxSpeed * (Back_RightPower / maxPower));
 
         // Put these telemetry lines inside loop() (near the end is fine)
-        telemetry.addData("Enc FL", Front_Left.getCurrentPosition());
-        telemetry.addData("Enc FR", Front_Right.getCurrentPosition());
-        telemetry.addData("Enc BL", Back_Left.getCurrentPosition());
-        telemetry.addData("Enc BR", Back_Right.getCurrentPosition());
+        telemetry.addData("Enc FL", frontLeftDrive.getCurrentPosition());
+        telemetry.addData("Enc FR", frontRightDrive.getCurrentPosition());
+        telemetry.addData("Enc BL", backLeftDrive.getCurrentPosition());
+        telemetry.addData("Enc BR", backRightDrive.getCurrentPosition());
 
 // Optional: show the current run modes too (helps confirm encoder vs no-encoder)
-        telemetry.addData("Mode FL", Front_Left.getMode());
-        telemetry.addData("Mode FR", Front_Right.getMode());
-        telemetry.addData("Mode BL", Back_Left.getMode());
-        telemetry.addData("Mode BR", Back_Right.getMode());
+        telemetry.addData("Mode FL", frontLeftDrive.getMode());
+        telemetry.addData("Mode FR", frontRightDrive.getMode());
+        telemetry.addData("Mode BL", backLeftDrive.getMode());
+        telemetry.addData("Mode BR", backRightDrive.getMode());
 
         telemetry.update();
 

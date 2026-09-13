@@ -33,11 +33,11 @@ public class RobotCode2025_20265 extends LinearOpMode {
         float Left_Trigger;
         float Right_Trigger;
 
-        Front_Left = hardwareMap.get(DcMotor.class, "Front_Left");
-        Back_Left = hardwareMap.get(DcMotor.class, "Back_Left");
+        Front_Left = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        Back_Left = hardwareMap.get(DcMotor.class, "backLeftDrive");
         Right_Launcher_Motor = hardwareMap.get(DcMotor.class, "Right_Launcher_Motor");
-        Front_Right = hardwareMap.get(DcMotor.class, "Front_Right");
-        Back_Right = hardwareMap.get(DcMotor.class, "Back_Right");
+        Front_Right = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        Back_Right = hardwareMap.get(DcMotor.class, "backRightDrive");
         feedRamp = hardwareMap.get(Servo.class, "feedRamp");
         feedServo = hardwareMap.get(CRServo.class, "feedServo");
         Left_Launcher_Motor = hardwareMap.get(DcMotor.class, "Left_Launcher_Motor");

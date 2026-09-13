@@ -27,9 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -52,10 +51,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 //@Disabled
 public class ConceptScanServo extends LinearOpMode {
 
-    static final double INCREMENT   = 0.01;     // amount to slew servo each CYCLE_MS cycle
-    static final int    CYCLE_MS    =   50;     // period of each cycle
+    static final double INCREMENT   = 0.05;     // amount to slew servo each CYCLE_MS cycle
+    static final int    CYCLE_MS    =   100;     // period of each cycle
     static final double MAX_POS     =  1.0;     // Maximum rotational position
-    static final double MIN_POS     =  0.0;     // Minimum rotational position
+    static final double MIN_POS     =  -1.0;     // Minimum rotational position
 
     // Define class members
     Servo   servo;
