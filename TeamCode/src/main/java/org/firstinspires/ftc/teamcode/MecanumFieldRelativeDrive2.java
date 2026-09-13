@@ -112,6 +112,35 @@ public class MecanumFieldRelativeDrive2 extends OpMode {
         telemetry.addLine("The left joystick sets the robot direction");
         telemetry.addLine("Moving the right joystick left and right turns the robot");
 
+        // If you press the A button, then you reset the Yaw to be zero from the way
+        // the robot is currently pointing
+        if (gamepad1.a) {
+            imu.resetYaw();
+        }
+
+        double forward = -gamepad1.left_stick_y;
+        double right = gamepad1.left_stick_x;
+        double rotate = gamepad1.right_stick_x;
+
+        // If you press the left bumper, you get a drive from the point of view of the robot
+        // (much like driving an RC vehicle)
+        if (gamepad1.left_bumper) {
+            drive(forward, right, rotate);
+        } else {
+            driveFieldRelative(forward, right, rotate);
+        }
+
+        if (gamepad2.a) {
+            bench.setMotorSpeed(0.5);
+        } else {
+            bench.setMotorSpeed(0);
+        }
+
+        if (gamepad2.left_bumper) {
+            bench.setServoRot(1.0);
+        } else {
+            bench.setServoRot(0);
+        }
     }
 
 //    //This routine drives the robot field relative

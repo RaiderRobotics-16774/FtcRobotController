@@ -119,10 +119,14 @@ public class DrivePlusRot extends OpMode {
         }
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
+        double forward = -gamepad1.left_stick_y;
+        double right = gamepad1.left_stick_x;
+        double rotate = gamepad1.right_stick_x;
+
         if (gamepad1.left_bumper) {
-            drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            drive(forward, right, rotate);
         } else {
-            driveFieldRelative(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            driveFieldRelative(forward, right, rotate);
         }
 
         if (gamepad2.a) {
