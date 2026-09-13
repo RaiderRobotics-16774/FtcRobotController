@@ -17,7 +17,7 @@ public class MotorGo extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.a) {
-            bench.setMotorSpeed(0.5);
+            bench.setMotorSpeed(-1.0);
         }
         else {
             bench.setMotorSpeed(0);

@@ -130,13 +130,13 @@ public class DrivePlusRot extends OpMode {
         }
 
         if (gamepad2.a) {
-            bench.setMotorSpeed(0.5);
+            bench.setMotorSpeed(-1.0);
         } else {
             bench.setMotorSpeed(0);
         }
 
         if (gamepad2.left_bumper) {
-            bench.setServoRot(1.0);
+            bench.setServoRot(-1.0);
         } else {
             bench.setServoRot(0);
         }
