@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.Bench;
+import org.firstinspires.ftc.teamcode.mechanisms.BigWheel;
 import org.firstinspires.ftc.teamcode.mechanisms.UpDownVroom;
 
 @TeleOp(name = "One Big Code", group = "Robot")
@@ -24,6 +25,7 @@ public class OneBigCode extends OpMode {
     // Mechanisms
     private final Bench bench = new Bench();
     private final UpDownVroom upDown = new UpDownVroom();
+    private final BigWheel bigWheel = new BigWheel();
 
     @Override
     public void init() {
@@ -57,6 +59,7 @@ public class OneBigCode extends OpMode {
         // Initialize mechanisms
         bench.init(hardwareMap);
         upDown.init(hardwareMap);
+        bigWheel.init(hardwareMap);
     }
 
     @Override
@@ -101,10 +104,19 @@ public class OneBigCode extends OpMode {
             upDown.setMotorSpeed(0);
         }
 
+        // BigWheel Motor ("massive_wheel")
+        if (gamepad2.b) {
+            bigWheel.setMotorSpeed(0.67); // Increased power to 0.67
+            telemetry.addData("BigWheel", "ON (0.67)");
+        } else {
+            bigWheel.setMotorSpeed(0);
+            telemetry.addData("BigWheel", "OFF");
+        }
+
         // --- Telemetry ---
         telemetry.addData("Status", "Running");
         telemetry.addData("Heading", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-        telemetry.addData("Encoders", "FL:%d FR:%d BL:%d BR:%d", 
+        telemetry.addData("Encoders", "FL:%d FR:%d BL:%d BR:%d",
             frontLeftDrive.getCurrentPosition(), frontRightDrive.getCurrentPosition(),
             backLeftDrive.getCurrentPosition(), backRightDrive.getCurrentPosition());
         telemetry.update();
