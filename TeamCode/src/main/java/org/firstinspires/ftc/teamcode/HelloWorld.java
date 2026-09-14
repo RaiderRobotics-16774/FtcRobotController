@@ -14,6 +14,6 @@ public class HelloWorld extends OpMode {
     }
 // display your name in the loop
     public void loop() {
-        telemetry.addData("Hello", "Wintress" );
+        telemetry.addData("Hello", "Bentley");
     }
 }
