@@ -144,7 +144,7 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
         waitForStart();
 
         while (opModeIsActive())
-        {()
+        {
             targetFound = false;
             desiredTag  = null;
 
