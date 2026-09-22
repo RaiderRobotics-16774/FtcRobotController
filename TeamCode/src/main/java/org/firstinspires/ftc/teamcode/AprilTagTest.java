@@ -180,16 +180,24 @@ public class AprilTagTest extends LinearOpMode
             // If Left Bumper is being pressed, AND we have found the desired target, Drive to target Automatically .
             if (gamepad1.left_bumper && targetFound) {
 
-                // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
+                // Determine heading, range and lateral error so we can use them to control the robot automatically.
                 Pose3D pose = desiredTag.getTargetPoseCameraSpace();
-                double  rangeError      = (pose.getPosition().toUnit(DistanceUnit.INCH).z - DESIRED_DISTANCE);
-                double  headingError    = Math.toDegrees(Math.atan2(pose.getPosition().x, pose.getPosition().z));
-                double  yawError        = pose.getOrientation().getYaw(AngleUnit.DEGREES);
+                
+                // Z is the distance straight ahead to the tag (range)
+                double rangeError = (pose.getPosition().toUnit(DistanceUnit.INCH).z - DESIRED_DISTANCE);
+                
+                // X is the sideways translation. We use this to strafe and center the tag.
+                double lateralError = pose.getPosition().toUnit(DistanceUnit.INCH).x;
+                
+                // Calculate the bearing (angle to target) for turning.
+                double headingError = Math.toDegrees(Math.atan2(pose.getPosition().x, pose.getPosition().z));
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
                 drive  = Range.clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-                turn   = Range.clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
-                strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+                // Limelight X is positive to the right. To turn toward a target on the right, we need a negative yaw value.
+                turn   = Range.clip(-headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+                // To strafe toward a target on the right (positive X), we need a negative strafe (y) value.
+                strafe = Range.clip(-lateralError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             } else {
