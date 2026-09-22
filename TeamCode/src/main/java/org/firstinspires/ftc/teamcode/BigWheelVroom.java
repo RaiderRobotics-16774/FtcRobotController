@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechanisms.VroomVroom;
+import org.firstinspires.ftc.teamcode.mechanisms.BigWheel;
 
 @TeleOp
-public class MotorGo extends OpMode {
-    VroomVroom bench = new VroomVroom();
+public class BigWheelVroom extends OpMode {
+    BigWheel bench = new BigWheel();
 
     @Override
     public void init() {
@@ -16,8 +16,8 @@ public class MotorGo extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad1.a) {
-            bench.setMotorSpeed(-1.0);
+        if (gamepad2.b) {
+            bench.setMotorSpeed(-0.3);
         }
         else {
             bench.setMotorSpeed(0);

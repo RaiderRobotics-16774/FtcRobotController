@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
@@ -82,9 +82,9 @@ import java.util.List;
  *
  */
 
-@TeleOp(name="Omni Drive To AprilTag", group = "Concept")
+@TeleOp(name="AprilTagTest", group = "Concept")
 //@Disabled
-public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
+public class AprilTagTest extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
     final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
@@ -105,17 +105,16 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
     private DcMotor backLeftDrive = null;  //  Used to control the left back drive wheel
     private DcMotor backRightDrive = null;  //  Used to control the right back drive wheel
 
-    private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
     private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private Limelight3A limelight;                   // Used to manage the Limelight sensor.
-    private LLResultTypes.FiducialResult desiredTag = null; // Used to hold the data for a detected AprilTag
 
     @Override public void runOpMode()
     {
-        boolean targetFound     = false;    // Set to true when an AprilTag target is detected
-        double  drive           = 0;        // Desired forward power/speed (-1 to +1)
-        double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
-        double  turn            = 0;        // Desired turning power/speed (-1 to +1)
+        boolean targetFound;    // Set to true when an AprilTag target is detected
+        double  drive;          // Desired forward power/speed (-1 to +1)
+        double  strafe;         // Desired strafe power/speed (-1 to +1)
+        double  turn;           // Desired turning power/speed (-1 to +1)
+        LLResultTypes.FiducialResult desiredTag;
 
         // Initialize the Limelight process
         initLimelight();
@@ -123,10 +122,10 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must match the names assigned during the robot configuration.
         // step (using the FTC Robot Controller app on the phone).
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "Front_Left");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "Front_Right");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "Back_Left");
-        backRightDrive = hardwareMap.get(DcMotor.class, "Back_Right");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
