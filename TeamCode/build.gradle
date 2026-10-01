@@ -19,14 +19,23 @@ apply from: '../build.dependencies.gradle'
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
 
+    //ADD THIS
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 24
+    }
+    //
+
     packagingOptions {
-        jniLibs {
-            pickFirsts += ['**/*.so']
-        }
         jniLibs.useLegacyPackaging true
     }
 }
 
+
 dependencies {
     implementation project(':FtcRobotController')
+}
+dependencies {
+    implementation "com.bylazar:ftcontrol:0.6.8"
 }
