@@ -106,8 +106,8 @@ public class OneBigCode extends OpMode {
 
         // BigWheel Motor ("massive_wheel")
         if (gamepad2.b) {
-            bigWheel.setMotorSpeed(0.67); // Increased power to 0.67
-            telemetry.addData("BigWheel", "ON (0.67)");
+            bigWheel.setMotorSpeed(-0.67); // Increased power to -0.67
+            telemetry.addData("BigWheel", "ON (-0.67)");
         } else {
             bigWheel.setMotorSpeed(0);
             telemetry.addData("BigWheel", "OFF");
