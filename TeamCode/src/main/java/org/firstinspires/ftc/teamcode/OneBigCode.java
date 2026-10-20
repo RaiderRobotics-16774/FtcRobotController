@@ -29,32 +29,45 @@ public class OneBigCode extends OpMode {
 
     @Override
     public void init() {
-        // Initialize drivetrain motors
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        // Initialize drivetrain motors with fallbacks for alternative naming conventions
+        frontLeftDrive = getDcMotor("frontLeftDrive", "Front_Left", "front_left_motor", "FL");
+        frontRightDrive = getDcMotor("frontRightDrive", "Front_Right", "front_right_motor", "FR");
+        backLeftDrive = getDcMotor("backLeftDrive", "Back_Left", "back_left_motor", "BL");
+        backRightDrive = getDcMotor("backRightDrive", "Back_Right", "back_right_motor", "BR");
 
         // Reverse left motors
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        if (backLeftDrive != null) {
+            backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+        if (frontLeftDrive != null) {
+            frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+        if (frontRightDrive != null) {
+            frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+        if (backRightDrive != null) {
+            backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
 
-        // Set run mode
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Initialize IMU safely
+        try {;
+            RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
+                    RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
+            RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
+                    RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
 
-        // Initialize IMU
-        imu = hardwareMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
-
-        RevHubOrientationOnRobot orientationOnRobot = new
-                RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+            RevHubOrientationOnRobot orientationOnRobot = new
+                    RevHubOrientationOnRobot(logoDirection, usbDirection);
+            imu.initialize(new IMU.Parameters(orientationOnRobot));
+        } catch (Exception e) {
+            imu = null;
+        }
 
         // Initialize mechanisms
         bench.init(hardwareMap);
@@ -65,7 +78,7 @@ public class OneBigCode extends OpMode {
     @Override
     public void loop() {
         // --- Drivetrain Logic (Gamepad 1) ---
-        if (gamepad1.a) {
+        if (gamepad1.a && imu != null) {
             imu.resetYaw();
         }
 
@@ -73,7 +86,7 @@ public class OneBigCode extends OpMode {
         double right = gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
 
-        if (gamepad1.left_bumper) {
+        if (gamepad1.left_bumper || imu == null) {
             drive(forward, right, rotate);
         } else {
             driveFieldRelative(forward, right, rotate);
@@ -91,6 +104,8 @@ public class OneBigCode extends OpMode {
         // Bench Servo ("servo_rot")
         if (gamepad2.left_bumper) {
             bench.setServoRot(-1.0);
+        } else if (gamepad2.right_bumper) {
+            bench.setServoRot(1.0);
         } else {
             bench.setServoRot(0);
         }
@@ -105,29 +120,50 @@ public class OneBigCode extends OpMode {
         }
 
         // BigWheel Motor ("massive_wheel")
-        if (gamepad2.b) {
-            bigWheel.setMotorSpeed(-1); // Increased power to -0.67
+        if (gamepad2.y) {
+            bigWheel.setMotorSpeed(-1.0);
             telemetry.addData("BigWheel", "ON (-1)");
+        } else if (gamepad2.x) {
+            bigWheel.setMotorSpeed(1.0);
+            telemetry.addData("BigWheel", "ON (1)");
         } else {
             bigWheel.setMotorSpeed(0);
             telemetry.addData("BigWheel", "OFF");
         }
 
-        // --- Telemetry ---
+        if (gamepad2.b) {
+            bench.setServoRot(1.0);
+        }
+        else {
+            bench.setServoRot(0);
+        }
+
+            // --- Telemetry ---
         telemetry.addData("Status", "Running");
-        telemetry.addData("Heading", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        if (imu != null) {
+            telemetry.addData("Heading", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        } else {
+            telemetry.addData("Heading", "IMU unavailable");
+        }
         telemetry.addData("Encoders", "FL:%d FR:%d BL:%d BR:%d",
-            frontLeftDrive.getCurrentPosition(), frontRightDrive.getCurrentPosition(),
-            backLeftDrive.getCurrentPosition(), backRightDrive.getCurrentPosition());
+                frontLeftDrive != null ? frontLeftDrive.getCurrentPosition() : 0,
+                frontRightDrive != null ? frontRightDrive.getCurrentPosition() : 0,
+                backLeftDrive != null ? backLeftDrive.getCurrentPosition() : 0,
+                backRightDrive != null ? backRightDrive.getCurrentPosition() : 0);
         telemetry.update();
     }
 
     private void driveFieldRelative(double forward, double right, double rotate) {
+        if (imu == null) {
+            drive(forward, right, rotate);
+            return;
+        }
+
         double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Rotate the joystick vector by -heading to convert field -> robot coordinates
-        double rotRight = right * Math.cos(heading) - forward * Math.sin(heading);
-        double rotForward = right * Math.sin(heading) + forward * Math.cos(heading);
+        double rotRight = right * Math.cos(heading) + forward * Math.sin(heading);
+        double rotForward = -right * Math.sin(heading) + forward * Math.cos(heading);
 
         drive(rotForward, rotRight, rotate);
     }
@@ -144,9 +180,21 @@ public class OneBigCode extends OpMode {
         maxPower = Math.max(maxPower, Math.abs(Back_RightPower));
         maxPower = Math.max(maxPower, Math.abs(Back_LeftPower));
 
-        frontLeftDrive.setPower(Front_LeftPower / maxPower);
-        frontRightDrive.setPower(Front_RightPower / maxPower);
-        backLeftDrive.setPower(Back_LeftPower / maxPower);
-        backRightDrive.setPower(Back_RightPower / maxPower);
+        if (frontLeftDrive != null) frontLeftDrive.setPower(Front_LeftPower / maxPower);
+        if (frontRightDrive != null) frontRightDrive.setPower(Front_RightPower / maxPower);
+        if (backLeftDrive != null) backLeftDrive.setPower(Back_LeftPower / maxPower);
+        if (backRightDrive != null) backRightDrive.setPower(Back_RightPower / maxPower);
+    }
+
+    private DcMotor getDcMotor(String... names) {
+        for (String name : names) {
+            try {
+                DcMotor motor = hardwareMap.get(DcMotor.class, name);
+                if (motor != null) return motor;
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
     }
 }
+
