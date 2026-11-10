@@ -37,12 +37,12 @@ public class StarterAuto extends OpMode {
 
     // ---- Poses: where the robot should be at each point. Change these to make new paths. ----
     private final Pose startPose   = new Pose(0, 0, Math.toRadians(0));
-    private final Pose forwardPose = new Pose(24, 0, Math.toRadians(0));
-    private final Pose curveEndPose = new Pose(48, 24, Math.toRadians(90));
+    private final Pose forwardPose = new Pose(64, -36.5, Math.toRadians(0));
+    private final Pose curveEndPose = new Pose(0, 0, Math.toRadians(90));
 
     // A curve also needs a "control point". The robot does not drive through it;
     // it pulls the curve toward itself, like a magnet. Move it to change the shape.
-    private final Pose curveControl = new Pose(48, 0);
+    private final Pose curveControl = new Pose(13, 13);
 
     // ---- Paths: built from the poses above in buildPaths(). ----
     private Path driveForward;

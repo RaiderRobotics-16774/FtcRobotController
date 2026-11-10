@@ -27,6 +27,7 @@ public class Constants {
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
     });
+
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
         c.frontLeftName.set("frontLeftDrive");
         c.frontRightName.set("frontRightDrive");
@@ -37,7 +38,6 @@ public class Constants {
         c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
     });
-
 
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
