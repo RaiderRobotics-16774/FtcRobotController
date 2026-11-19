@@ -53,6 +53,9 @@ public abstract class ParkAutoBase extends OpMode {
     /** Park at the corner nearest the AUDIENCE (true) or the far corner (false). */
     public static boolean PARK_AT_AUDIENCE_END = true;
 
+    // to adjust drive speed, change value below
+    public static double DRIVE_SPEED = 0.2;
+
     /** Half of the robot's front-to-back length, in inches. 18 in robot -> 9. */
     public static double ROBOT_HALF_LENGTH = 9.0;
     /** Half of the robot's side-to-side width, in inches. */

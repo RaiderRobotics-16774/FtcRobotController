@@ -56,7 +56,8 @@ public class OneBigCode extends OpMode {
         }
 
         // Initialize IMU safely
-        try {;
+        try {
+            imu = hardwareMap.get(IMU.class, "imu");
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
                     RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
             RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
@@ -95,17 +96,17 @@ public class OneBigCode extends OpMode {
         // --- Mechanism Logic (Gamepad 2) ---
 
         // Bench Motor ("silly")
-        if (gamepad2.a) {
+        if (gamepad2.left_bumper) {
             bench.setMotorSpeed(-1.0);
+        } else if (gamepad2.right_bumper) {
+            bench.setMotorSpeed(1.0);
         } else {
             bench.setMotorSpeed(0);
         }
 
         // Bench Servo ("servo_rot")
-        if (gamepad2.left_bumper) {
+        if (gamepad2.a) {
             bench.setServoRot(-1.0);
-        } else if (gamepad2.right_bumper) {
-            bench.setServoRot(1.0);
         } else {
             bench.setServoRot(0);
         }
@@ -131,14 +132,7 @@ public class OneBigCode extends OpMode {
             telemetry.addData("BigWheel", "OFF");
         }
 
-        if (gamepad2.b) {
-            bench.setServoRot(1.0);
-        }
-        else {
-            bench.setServoRot(0);
-        }
-
-            // --- Telemetry ---
+        // --- Telemetry ---
         telemetry.addData("Status", "Running");
         if (imu != null) {
             telemetry.addData("Heading", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
@@ -162,8 +156,8 @@ public class OneBigCode extends OpMode {
         double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Rotate the joystick vector by -heading to convert field -> robot coordinates
-        double rotRight = right * Math.cos(heading) + forward * Math.sin(heading);
-        double rotForward = -right * Math.sin(heading) + forward * Math.cos(heading);
+        double rotRight = right * Math.cos(heading) - forward * Math.sin(heading);
+        double rotForward = right * Math.sin(heading) + forward * Math.cos(heading);
 
         drive(rotForward, rotRight, rotate);
     }
@@ -197,4 +191,3 @@ public class OneBigCode extends OpMode {
         return null;
     }
 }
-
