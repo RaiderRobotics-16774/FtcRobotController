@@ -24,6 +24,11 @@ public class Bench {
         } catch (Exception ignored) {
             servoRot = null;
         }
+        try {
+            servoFeed = hwMap.get(CRServo.class, "servo_feed");
+        } catch (Exception ignored) {
+            servoFeed = null;
+        }
     }
 
     public void setMotorSpeed(double speed) {
@@ -35,6 +40,12 @@ public class Bench {
     public void setServoRot(double power) {
         if (servoRot != null) {
             servoRot.setPower(power);
+        }
+    }
+
+    public void setServoFeed(double power) {
+        if (servoFeed != null) {
+            servoFeed.setPower(power);
         }
     }
 }
