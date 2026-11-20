@@ -102,9 +102,11 @@ public class OneBigCode extends OpMode {
         }
 
         // Bench Servo ("servo_rot")
+        // Left bumper = -1, right bumper or B = +1, nothing pressed = stop.
+        // (B used to be a separate block that reset this to 0 every loop, so the bumpers never worked.)
         if (gamepad2.left_bumper) {
             bench.setServoRot(-1.0);
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.right_bumper || gamepad2.b) {
             bench.setServoRot(1.0);
         } else {
             bench.setServoRot(0);
@@ -120,10 +122,11 @@ public class OneBigCode extends OpMode {
         }
 
         // BigWheel Motor ("massive_wheel")
+        // NOTE: the +1 direction used to be on X. It moved to D-pad Up so X can run servoFeed.
         if (gamepad2.y) {
             bigWheel.setMotorSpeed(-1.0);
             telemetry.addData("BigWheel", "ON (-1)");
-        } else if (gamepad2.x) {
+        } else if (gamepad2.dpad_up) {
             bigWheel.setMotorSpeed(1.0);
             telemetry.addData("BigWheel", "ON (1)");
         } else {
@@ -131,12 +134,10 @@ public class OneBigCode extends OpMode {
             telemetry.addData("BigWheel", "OFF");
         }
 
-        if (gamepad2.b) {
-            bench.setServoRot(1.0);
-        }
-        else {
-            bench.setServoRot(0);
-        }
+        // Bench Feed Servo ("servoFeed")
+        // Hold X = feed, let go = back to rest. Tune the numbers at the top of Bench.java.
+        bench.setServoFeed(gamepad2.x);
+        telemetry.addData("servoFeed", "%s  %s", bench.servoFeedStatus(), gamepad2.x ? "FEEDING" : "rest");
 
             // --- Telemetry ---
         telemetry.addData("Status", "Running");
