@@ -122,13 +122,10 @@ public class OneBigCode extends OpMode {
         }
 
         // BigWheel Motor ("massive_wheel")
-        // NOTE: the +1 direction used to be on X. It moved to D-pad Up so X can run servoFeed.
+        // Hold Y = forward, let go = stop. No reverse. (If it spins the wrong way, change 1.0 to -1.0.)
         if (gamepad2.y) {
-            bigWheel.setMotorSpeed(-1.0);
-            telemetry.addData("BigWheel", "ON (-1)");
-        } else if (gamepad2.dpad_up) {
             bigWheel.setMotorSpeed(1.0);
-            telemetry.addData("BigWheel", "ON (1)");
+            telemetry.addData("BigWheel", "ON");
         } else {
             bigWheel.setMotorSpeed(0);
             telemetry.addData("BigWheel", "OFF");
