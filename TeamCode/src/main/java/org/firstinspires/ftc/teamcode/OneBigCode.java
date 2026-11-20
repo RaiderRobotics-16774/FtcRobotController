@@ -120,10 +120,11 @@ public class OneBigCode extends OpMode {
         }
 
         // BigWheel Motor ("massive_wheel")
+        // NOTE: the +1 direction used to be on X. It moved to D-pad Up so X can run servoFeed.
         if (gamepad2.y) {
             bigWheel.setMotorSpeed(-1.0);
             telemetry.addData("BigWheel", "ON (-1)");
-        } else if (gamepad2.x) {
+        } else if (gamepad2.dpad_up) {
             bigWheel.setMotorSpeed(1.0);
             telemetry.addData("BigWheel", "ON (1)");
         } else {
@@ -137,6 +138,11 @@ public class OneBigCode extends OpMode {
         else {
             bench.setServoRot(0);
         }
+
+        // Bench Feed Servo ("servoFeed")
+        // Hold X = feed, let go = back to rest. Tune the numbers at the top of Bench.java.
+        bench.setServoFeed(gamepad2.x);
+        telemetry.addData("servoFeed", "%s  %s", bench.servoFeedStatus(), gamepad2.x ? "FEEDING" : "rest");
 
             // --- Telemetry ---
         telemetry.addData("Status", "Running");
