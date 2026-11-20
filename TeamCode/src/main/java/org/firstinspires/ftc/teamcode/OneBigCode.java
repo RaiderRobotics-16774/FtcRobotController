@@ -102,9 +102,11 @@ public class OneBigCode extends OpMode {
         }
 
         // Bench Servo ("servo_rot")
+        // Left bumper = -1, right bumper or B = +1, nothing pressed = stop.
+        // (B used to be a separate block that reset this to 0 every loop, so the bumpers never worked.)
         if (gamepad2.left_bumper) {
             bench.setServoRot(-1.0);
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.right_bumper || gamepad2.b) {
             bench.setServoRot(1.0);
         } else {
             bench.setServoRot(0);
@@ -130,13 +132,6 @@ public class OneBigCode extends OpMode {
         } else {
             bigWheel.setMotorSpeed(0);
             telemetry.addData("BigWheel", "OFF");
-        }
-
-        if (gamepad2.b) {
-            bench.setServoRot(1.0);
-        }
-        else {
-            bench.setServoRot(0);
         }
 
         // Bench Feed Servo ("servoFeed")
