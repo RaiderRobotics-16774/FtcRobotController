@@ -15,9 +15,11 @@ public class Bench {
     private CRServo servoFeedCR;
 
     // ---- servoFeed settings: change these numbers to tune it ----
-    // Regular servo: positions run from 0.0 to 1.0
-    public static final double FEED_REST_POSITION = 0.0;   // where it sits when X is NOT held
-    public static final double FEED_PUSH_POSITION = 0.5;   // where it goes while X IS held
+    // servo_feed is a continuous-rotation servo set up in the config as a regular "Servo".
+    // For that setup, 0.5 = STOP, 1.0 = full speed one way, 0.0 = full speed the other way.
+    // (It used to rest at 0.0, which made it spin all the time and stop only while X was held.)
+    public static final double FEED_REST_POSITION = 0.5;   // X NOT held: stopped
+    public static final double FEED_PUSH_POSITION = 1.0;   // X held: spin (use 0.0 to reverse)
     // Continuous rotation servo: power runs from -1.0 to 1.0
     public static final double FEED_CR_POWER = 1.0;        // spin power while X is held (use -1.0 to reverse)
 
