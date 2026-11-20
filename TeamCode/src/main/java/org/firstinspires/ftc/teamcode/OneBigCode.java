@@ -114,7 +114,7 @@ public class OneBigCode extends OpMode {
         }
         // Bench Servo ("servo_feed")
         if (gamepad2.x) {
-            bench.setServoFeed(1.0);
+            bench.setServoFeed(-1.0);
         }else {
             bench.setServoFeed(0);
         }
