@@ -134,10 +134,10 @@ public class OneBigCode extends OpMode {
             telemetry.addData("BigWheel", "OFF");
         }
 
-        // Bench Feed Servo ("servoFeed")
+        // Bench Feed Servo ("servo_feed")
         // Hold X = feed, let go = back to rest. Tune the numbers at the top of Bench.java.
         bench.setServoFeed(gamepad2.x);
-        telemetry.addData("servoFeed", "%s  %s", bench.servoFeedStatus(), gamepad2.x ? "FEEDING" : "rest");
+        telemetry.addData("servo_feed", "%s  %s", bench.servoFeedStatus(), gamepad2.x ? "FEEDING" : "rest");
 
             // --- Telemetry ---
         telemetry.addData("Status", "Running");
