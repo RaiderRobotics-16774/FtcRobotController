@@ -107,14 +107,16 @@ public class OneBigCode extends OpMode {
         // Bench Servo ("servo_rot")
         if (gamepad2.a) {
             bench.setServoRot(-1.0);
-        } else {
+        } else if (gamepad2.b) {
+            bench.setServoRot(1.0);
+        }else {
             bench.setServoRot(0);
         }
 
         // UpDown Motor ("UpAndDown")
-        if (gamepad2.left_trigger > 0.1) {
+        if (gamepad2.right_trigger > 0.1) {
             upDown.setMotorSpeed(-0.3);
-        } else if (gamepad2.right_trigger > 0.1) {
+        } else if (gamepad2.left_trigger > 0.1) {
             upDown.setMotorSpeed(0.3);
         } else {
             upDown.setMotorSpeed(0);
@@ -124,9 +126,9 @@ public class OneBigCode extends OpMode {
         if (gamepad2.y) {
             bigWheel.setMotorSpeed(-1.0);
             telemetry.addData("BigWheel", "ON (-1)");
-        } else if (gamepad2.x) {
-            bigWheel.setMotorSpeed(1.0);
-            telemetry.addData("BigWheel", "ON (1)");
+       // } else if (gamepad2.x) {
+         //   bigWheel.setMotorSpeed(1.0);
+           // telemetry.addData("BigWheel", "ON (1)");
         } else {
             bigWheel.setMotorSpeed(0);
             telemetry.addData("BigWheel", "OFF");
