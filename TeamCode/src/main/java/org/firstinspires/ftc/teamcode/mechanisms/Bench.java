@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Bench {
     private DcMotor motor;
     private CRServo servoRot;
+    private CRServo servoFeed;
 
     public void init(HardwareMap hwMap) {
         try {
